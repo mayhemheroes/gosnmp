@@ -1,0 +1,55 @@
+# SNMP / BER fuzzing dictionary for gosnmp's SnmpDecodePacket.
+# No upstream .dict exists; these are the structural ASN.1-BER tokens and SNMP tag bytes the
+# packet parser (marshal.go) keys on — they help the fuzzer reach deeper decode paths.
+
+# ── ASN.1 / BER structural tags ──────────────────────────────────────────────
+seq_tag="\x30"
+integer_tag="\x02"
+octetstring_tag="\x04"
+null_tag="\x05"
+oid_tag="\x06"
+bool_tag="\x01"
+
+# ── SNMP application/context tags (gosnmp Asn1BER + PDU types) ────────────────
+ipaddress_tag="\x40"
+counter32_tag="\x41"
+gauge32_tag="\x42"
+timeticks_tag="\x43"
+opaque_tag="\x44"
+nsapaddress_tag="\x45"
+counter64_tag="\x46"
+uinteger32_tag="\x47"
+nosuchobject_tag="\x80"
+nosuchinstance_tag="\x81"
+endofmibview_tag="\x82"
+
+# ── PDU type tags (context-class constructed) ────────────────────────────────
+get_request="\xa0"
+getnext_request="\xa1"
+get_response="\xa2"
+set_request="\xa3"
+trap_v1="\xa4"
+getbulk_request="\xa5"
+inform_request="\xa6"
+trap_v2="\xa7"
+report="\xa8"
+
+# ── SNMP version bytes (the INTEGER value right after the outer SEQUENCE) ─────
+version_1="\x02\x01\x00"
+version_2c="\x02\x01\x01"
+version_3="\x02\x01\x03"
+
+# ── Opaque float/double special tags (gosnmp opaque decode) ──────────────────
+opaque_float="\x9f\x78"
+opaque_double="\x9f\x79"
+
+# ── Common strings / OID prefixes seen in real packets ───────────────────────
+community_public="public"
+community_private="private"
+oid_prefix_mib2="\x2b\x06\x01\x02\x01"
+oid_prefix_enterprise="\x2b\x06\x01\x04\x01"
+
+# ── SNMPv3 USM / msgFlags ────────────────────────────────────────────────────
+v3_msgflags_authpriv="\x04\x01\x07"
+v3_msgflags_noauth="\x04\x01\x00"
+usm_security_model="\x02\x01\x03"
